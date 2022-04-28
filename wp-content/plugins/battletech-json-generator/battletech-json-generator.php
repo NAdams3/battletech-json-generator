@@ -52,12 +52,13 @@ function btjg_activate () {
         PrefabIdentifier VARCHAR(255),
         BattleValue INT,
         InventorySize INT,
-        Tonnage DECIMAL(10, 1),
+        Tonnage DECIMAL(10, 2),
         AllowedLocations VARCHAR(255),
         DisallowedLocations VARCHAR(255),
         CriticalComponent BOOLEAN,
-        statusEffects1 VARCHAR(255),
-        tagSetSourceFile VARCHAR(255)
+        -- statusEffects1 VARCHAR(255), not gonna bother with status effects for now
+        tagSetSourceFile VARCHAR(255),
+        PRIMARY KEY(Name)
     );");
     
     $wpdb->query("CREATE TABLE IF NOT EXISTS {$wpdb->prefix}btjg_weapon_variations (
@@ -81,10 +82,11 @@ function btjg_activate () {
         BonusValueB VARCHAR(255),
         BattleValue INT,
         InventorySize INT,
-        Tonnage DECIMAL(10, 1),
+        Tonnage DECIMAL(10, 2),
         ComponentTags1 VARCHAR(255),
         ComponentTags2 VARCHAR(255),
-        ComponentTags3 VARCHAR(255)
+        ComponentTags3 VARCHAR(255),
+        PRIMARY KEY(Id)
     );");
 }
 
@@ -231,6 +233,8 @@ function insert_sub_type( $sub_type ) {
     $isIndirectFireCapable = $sub_type->IndirectFireCapable ?: 0;
     $isPurchasable = $description->Purchasable ?: 0;
     $isCriticalComponent = $sub_type->CriticalComponent ?: 0;
+    $battleValue = $sub_type->BattleValue ?: 0;
+    $details = str_replace("\"", "'", $sub_type->Description->Details);
 
     $wpdb->query("INSERT INTO {$wpdb->prefix}btjg_weapon_sub_types VALUES (" .
     "'{$sub_type->Category}'," .
@@ -264,18 +268,18 @@ function insert_sub_type( $sub_type ) {
     "{$sub_type->Description->Rarity}," . 
     "{$isPurchasable}," . 
     "'{$sub_type->Description->Model}'," . 
-    "'{$sub_type->Description->Details}'," . 
+    "\"{$details}\"," . 
     "'{$sub_type->Description->Icon}',"  . 
     "'{$sub_type->ComponentType}'," . 
     "'{$sub_type->ComponentSubType}'," . 
     "'{$sub_type->PrefabIdentifier}'," . 
-    "{$sub_type->BattleValue}," . 
+    "{$battleValue}," . 
     "{$sub_type->InventorySize}," . 
     "{$sub_type->Tonnage}," . 
     "'{$sub_type->AllowedLocations}'," . 
     "'{$sub_type->DisallowedLocations}'," . 
     "{$isCriticalComponent}," . 
-    "'{$sub_type->statusEffects[0]}'," . 
+    // "'{$sub_type->statusEffects[0]}'," . not gonna bother with status effects for now
     "'{$sub_type->ComponentTags->tagSetSourceFile}')");
 }
 
@@ -325,3 +329,87 @@ function read_json_shortcode() {
 }
 
 add_shortcode('read-json', 'read_json_shortcode');
+
+function export_json_shortcode() {
+    export_to_json();
+}
+
+add_shortcode('export-json', 'export_json_shortcode');
+
+
+function export_to_json() {
+
+    $variations = get_variations();
+    $sub_types = get_sub_types();
+
+    foreach( $variations as $variation ) {
+        $sub_type_index = array_search($variation->WeaponSubType, array_column($sub_types, 'Name'));
+        $formatted_variation = format_variation( $variation, $sub_types[$sub_type_index] );
+        //json_encode
+        //write file
+        file_put_contents(WP_PLUGIN_DIR . "/battletech-json-generator/battletech-json-output/" . $variation->Id . ".json", json_encode($formatted_variation));
+    }
+
+}
+
+function format_variation( $variation, $sub_type ) {
+
+    $componentTypeTag = 'component_type_stock';
+    if( !str_contains($variation->ID, 'STOCK') ) {
+        $componentTypeTag = 'component_type_variant';
+    }
+
+    $componentRangeTag = 'range_standard';
+    if( str_contains($variation->ComponentTags2, 'range') ) {
+        $componentRangeTag = $variation->ComponentTags2;
+    }
+    if( str_contains($variation->ComponentTags3, 'range') ) {
+        $componentRangeTag = $variation->ComponentTags3;
+    }
+
+    return (object) array(
+        'MinRange' => (int) $sub_type->MinRange,
+        'MaxRange' => (int) $sub_type->MaxRange,
+        'RangeSplit' => array(
+            (int) $sub_type->RangeSplit1,
+            (int) $sub_type->RangeSplit2,
+            (int) $sub_type->RangeSplit3
+        ),
+        'HeatGenerated' => $sub_type->HeatGenerated + $variation->HeatGenerated,
+        'Damage' => $sub_type->Damage + $variation->Damage,
+        // 'HeatDamage' => $sub_type->HeatDamage + $variation->HeatDamage,
+        'ShotsWhenFired' => (int) $sub_type->ShotsWhenFired,
+        'ProjectilesPerShot' => (int) $sub_type->ProjectilesPerShot,
+        // 'Instability' => $sub_type->Instability + $variation->Instability,
+        'Description' => (object) array(
+            'Rarity' => 0,
+            'Purchasable' => true,
+        ),
+        // 'InventorySize' => $sub_type->InventorySize + $variation->InventorySize,
+        // 'Tonnage' => $sub_type->Tonnage + $variation->Tonnage,
+        'ComponentTags' => (object) array(
+            'items' => array(
+                $componentTypeTag,
+                $componentRangeTag,
+            ),
+        ),
+    );
+
+}
+
+function get_variation() {
+
+}
+
+function get_variations() {
+    global $wpdb;
+
+    return $wpdb->get_results("SELECT * FROM {$wpdb->prefix}btjg_weapon_variations;");
+
+}
+
+function get_sub_types() {
+    global $wpdb;
+
+    return $wpdb->get_results("SELECT * FROM {$wpdb->prefix}btjg_weapon_sub_types;");
+}
