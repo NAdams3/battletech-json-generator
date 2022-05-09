@@ -1,0 +1,110 @@
+stdClass Object (
+    [ChassisID] => chassisdef_bullshark_BSK-MAZ
+    [HeraldryID] =>
+    [Description] => stdClass Object (
+        [Cost] => 31520000
+        [Rarity] => 2
+        [Purchasable] => 1
+        [Manufacturer] =>
+        [Model] =>
+        [UIName] => Bull Shark BSK-MAZ
+        [Id] => mechdef_bullshark_BSK-MAZ
+        [Name] => Bull Shark
+        [Details] => I’ve never seen anything like this, Commander. This ‘Mech oozes deadly grace and can obviously devastate anything in its path. It’s… otherworldly, but clearly influenced by Star League tech. It has a mounted artillery piece to boot—I wonder where it came from.
+        [Icon] => uixTxrIcon_bullshark
+    )
+    [RequiredToSpawnCompanyTags] => stdClass Object (
+        [items] => Array (
+            [0] => flashpoint_HM5_hourglass_complete
+        )
+        [tagSetSourceFile] =>
+    )
+    [simGameMechPartCost] => 3150000
+    [Version] => 1
+    [Locations] => Array (
+        [0] => stdClass Object (
+            [DamageLevel] => Functional
+            [Location] => Head
+            [CurrentArmor] => 45
+            [CurrentRearArmor] => -1
+            [CurrentInternalStructure] => 16
+            [AssignedArmor] => 45
+            [AssignedRearArmor] => -1
+        )
+        [1] => stdClass Object (
+            [DamageLevel] => Functional
+            [Location] => LeftArm
+            [CurrentArmor] => 140
+            [CurrentRearArmor] => -1
+            [CurrentInternalStructure] => 80
+            [AssignedArmor] => 140
+            [AssignedRearArmor] => -1
+        )
+        [2] => stdClass Object (
+            [DamageLevel] => Functional
+            [Location] => LeftTorso
+            [CurrentArmor] => 155
+            [CurrentRearArmor] => 45
+            [CurrentInternalStructure] => 100
+            [AssignedArmor] => 155
+            [AssignedRearArmor] => 45
+        )
+        [3] => stdClass Object (
+            [DamageLevel] => Functional
+            [Location] => CenterTorso
+            [CurrentArmor] => 200
+            [CurrentRearArmor] => 55
+            [CurrentInternalStructure] => 150
+            [AssignedArmor] => 200
+            [AssignedRearArmor] => 55
+        )
+        [4] => stdClass Object (
+            [DamageLevel] => Functional
+            [Location] => RightTorso
+            [CurrentArmor] => 155
+            [CurrentRearArmor] => 45
+            [CurrentInternalStructure] => 100
+            [AssignedArmor] => 155
+            [AssignedRearArmor] => 45
+        )
+        [5] => stdClass Object (
+            [DamageLevel] => Functional
+            [Location] => RightArm
+            [CurrentArmor] => 140
+            [CurrentRearArmor] => -1
+            [CurrentInternalStructure] => 80
+            [AssignedArmor] => 140
+            [AssignedRearArmor] => -1
+        )
+        [6] => stdClass Object (
+            [DamageLevel] => Functional
+            [Location] => LeftLeg
+            [CurrentArmor] => 130
+            [CurrentRearArmor] => -1
+            [CurrentInternalStructure] => 100 
+            [AssignedArmor] => 130
+            [AssignedRearArmor] => -1
+        )
+        [7] => stdClass Object (
+            [DamageLevel] => Functional
+            [Location] => RightLeg
+            [CurrentArmor] => 130
+            [CurrentRearArmor] => -1
+            [CurrentInternalStructure] => 100
+            [AssignedArmor] => 130
+            [AssignedRearArmor] => -1
+        )
+    )
+    [inventory] => Array (
+        [0] => stdClass Object (
+            [MountedLocation] => CenterTorso
+            [ComponentDefID] => Gear_HeatSink_Generic_Double
+            [SimGameUID] =>
+            [ComponentDefType] => HeatSink
+            [HardpointSlot] => -1
+            [GUID] =>
+            [DamageLevel] => Functional
+            [prefabName] =>
+            [hasPrefabName] =>
+        )
+        [1] => stdClass Object ( [MountedLocation] => LeftTorso [ComponentDefID] => Gear_HeatSink_Generic_Double [SimGameUID] => [ComponentDefType] => HeatSink [HardpointSlot] => -1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [2] => stdClass Object ( [MountedLocation] => LeftTorso [ComponentDefID] => Gear_HeatSink_Generic_Double [SimGameUID] => [ComponentDefType] => HeatSink [HardpointSlot] => -1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [3] => stdClass Object ( [MountedLocation] => LeftTorso [ComponentDefID] => Ammo_AmmunitionBox_Generic_AC5 [SimGameUID] => [ComponentDefType] => AmmunitionBox [HardpointSlot] => -1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [4] => stdClass Object ( [MountedLocation] => LeftTorso [ComponentDefID] => Ammo_AmmunitionBox_Generic_AC5 [SimGameUID] => [ComponentDefType] => AmmunitionBox [HardpointSlot] => -1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [5] => stdClass Object ( [MountedLocation] => LeftTorso [ComponentDefID] => Weapon_Laser_MediumLaserER_2-BrightBloom [SimGameUID] => [ComponentDefType] => Weapon [HardpointSlot] => 0 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [6] => stdClass Object ( [MountedLocation] => LeftTorso [ComponentDefID] => Weapon_Laser_MediumLaserER_2-BrightBloom [SimGameUID] => [ComponentDefType] => Weapon [HardpointSlot] => 1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [7] => stdClass Object ( [MountedLocation] => RightTorso [ComponentDefID] => Weapon_Laser_MediumLaserER_2-BrightBloom [SimGameUID] => [ComponentDefType] => Weapon [HardpointSlot] => 0 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [8] => stdClass Object ( [MountedLocation] => RightTorso [ComponentDefID] => Weapon_Laser_MediumLaserER_2-BrightBloom [SimGameUID] => [ComponentDefType] => Weapon [HardpointSlot] => 1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [9] => stdClass Object ( [MountedLocation] => LeftArm [ComponentDefID] => Weapon_Autocannon_UAC5_1-Mydron [SimGameUID] => [ComponentDefType] => Weapon [HardpointSlot] => 0 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [10] => stdClass Object ( [MountedLocation] => LeftArm [ComponentDefID] => Weapon_Autocannon_LB10X_1-Western [SimGameUID] => [ComponentDefType] => Weapon [HardpointSlot] => 1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [11] => stdClass Object ( [MountedLocation] => RightArm [ComponentDefID] => Weapon_Autocannon_UAC5_1-Mydron [SimGameUID] => [ComponentDefType] => Weapon [HardpointSlot] => 0 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [12] => stdClass Object ( [MountedLocation] => RightArm [ComponentDefID] => Weapon_Autocannon_LB10X_1-Western [SimGameUID] => [ComponentDefType] => Weapon [HardpointSlot] => 1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [13] => stdClass Object ( [MountedLocation] => LeftLeg [ComponentDefID] => Ammo_AmmunitionBox_Generic_AC5 [SimGameUID] => [ComponentDefType] => AmmunitionBox [HardpointSlot] => -1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [14] => stdClass Object ( [MountedLocation] => LeftLeg [ComponentDefID] => Ammo_AmmunitionBox_Generic_LB10X [SimGameUID] => [ComponentDefType] => AmmunitionBox [HardpointSlot] => -1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [15] => stdClass Object ( [MountedLocation] => RightLeg [ComponentDefID] => Ammo_AmmunitionBox_Generic_AC5 [SimGameUID] => [ComponentDefType] => AmmunitionBox [HardpointSlot] => -1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) [16] => stdClass Object ( [MountedLocation] => RightLeg [ComponentDefID] => Ammo_AmmunitionBox_Generic_LB10X [SimGameUID] => [ComponentDefType] => AmmunitionBox [HardpointSlot] => -1 [GUID] => [DamageLevel] => Functional [prefabName] => [hasPrefabName] => ) ) [MechTags] => stdClass Object ( [items] => Array ( [0] => unit_mech [1] => unit_assault [2] => unit_release [3] => unit_ready [4] => unit_role_flanker [5] => unit_range_medium [6] => unit_armor_high [7] => BLACKLISTED ) [tagSetSourceFile] => ) )

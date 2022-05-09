@@ -19,7 +19,7 @@ services:
       - database
     image: wordpress:latest
     volumes:
-      - ./wp-content:/var/www/html/wp-content
+      - ./:/var/www/html/wp-content/plugins/battletech-json-generator
     ports:
       - "80:80"
     restart: always

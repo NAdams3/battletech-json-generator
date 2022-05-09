@@ -1,0 +1,113 @@
+stdClass Object (
+    [Category] => Energy
+    [Type] => PPC
+    [WeaponSubType] => PPC
+    [MinRange] => 90
+    [MaxRange] => 540
+    [RangeSplit] => Array (
+        [0] => 360
+        [1] => 360
+        [2] => 540
+    )
+    [ammoCategoryID] => NotSet
+    [StartingAmmoCapacity] => 0
+    [HeatGenerated] => 35
+    [Damage] => 50
+    [OverheatedDamageMultiplier] => 0
+    [EvasiveDamageMultiplier] => 0
+    [EvasivePipsIgnored] => 0
+    [DamageVariance] => 0
+    [HeatDamage] => 0
+    [AccuracyModifier] => 0
+    [CriticalChanceMultiplier] => 1
+    [AOECapable] =>
+    [IndirectFireCapable] =>
+    [RefireModifier] => 0
+    [ShotsWhenFired] => 1
+    [ProjectilesPerShot] => 1
+    [AttackRecoil] => 3
+    [Instability] => 20
+    [WeaponEffectID] => WeaponEffect-Weapon_PPC
+    [Description] => stdClass Object (
+        [Cost] => 180000
+        [Rarity] => 0
+        [Purchasable] => 1
+        [Manufacturer] => Magna
+        [Model] => Particle Projector Cannon
+        [UIName] => PPC
+        [Id] => Weapon_PPC_PPC_0-STOCK
+        [Name] => PPC
+        [Details] => Particle Projector Cannons—PPCs—fire streams of energized lightning at their target that deal substantial damage and stability impact. However, this comes with intense heat generation and bulkiness. PPCs also generate a mild EM field that degrades the firing capability of their target. [Icon] => uixSvgIcon_weapon_Energy
+    )
+    [BonusValueA] =>
+    [BonusValueB] =>
+    [ComponentType] => Weapon
+    [ComponentSubType] => Weapon
+    [PrefabIdentifier] => PPC
+    [BattleValue] => 0
+    [InventorySize] => 3
+    [Tonnage] => 7
+    [AllowedLocations] => All
+    [DisallowedLocations] => All
+    [CriticalComponent] =>
+    [statusEffects] => Array (
+        [0] => stdClass Object (
+            [durationData] => stdClass Object (
+                [duration] => 1
+                [ticksOnActivations] => 1
+                [useActivationsOfTarget] => 1
+                [ticksOnEndOfRound] =>
+                [ticksOnMovements] =>
+                [stackLimit] => 0
+                [clearedWhenAttacked] =>
+            )
+            [targetingData] => stdClass Object (
+                [effectTriggerType] => OnHit
+                [triggerLimit] => 0
+                [extendDurationOnTrigger] => 0
+                [specialRules] => NotSet
+                [effectTargetType] => NotSet
+                [range] => 0
+                [forcePathRebuild] =>
+                [forceVisRebuild] =>
+                [showInTargetPreview] => 1
+                [showInStatusPanel] => 1
+            )
+            [effectType] => StatisticEffect
+            [Description] => stdClass Object (
+                [Id] => AbilityDefPPC
+                [Name] => SENSORS IMPAIRED
+                [Details] => [AMT] Difficulty to all of this unit's attacks until its next activation.
+                [Icon] => uixSvgIcon_status_sensorsImpaired
+            )
+            [nature] => Debuff
+            [statisticData] => stdClass Object (
+                [appliesEachTick] =>
+                [effectsPersistAfterDestruction] =>
+                [statName] => AccuracyModifier
+                [operation] => Float_Add
+                [modValue] => 1.0
+                [modType] => System.Single
+                [additionalRules] => NotSet
+                [targetCollection] => NotSet
+                [targetWeaponCategory] => NotSet
+                [targetWeaponType] => NotSet
+                [targetAmmoCategory] => NotSet
+                [targetWeaponSubType] => NotSet
+            )
+            [tagData] =>
+            [floatieData] =>
+            [actorBurningData] =>
+            [vfxData] =>
+            [instantModData] =>
+            [poorlyMaintainedEffectData] =>
+        ) 
+    )
+    [ComponentTags] => stdClass Object (
+        [items] => Array (
+            [0] => component_type_stock
+            [1] => range_very-long
+        )
+        [tagSetSourceFile] =>
+    )
+)

@@ -1,0 +1,93 @@
+{
+   "Description" : {
+      "Id" : "",
+      "Name" : "",
+      "Details" : "",
+      "Icon" : "",
+      "Cost" : 0,
+      "Rarity" : 0,
+      "Purchasable" : false
+   },
+   "PrefabIdentifier" : "",
+   "PrefabBase" : "",
+   "Tonnage" : 0,
+   "weightClass" : "LIGHT",
+   "BattleValue" : 0,
+   "TopSpeed" : 0,
+   "TurnRadius" : 0,
+   "movementType" : "Wheeled",
+   "SpotterDistanceMultiplier" : 1,
+   "VisibilityMultiplier" : 1,
+   "SensorRangeMultiplier" : 1,
+   "Signature" : 0,
+   "Radius" : 8,
+   "LOSSourcePositions" : null,
+   "LOSTargetPositions" : null,
+   "Locations" : [
+      {
+         "Location" : "Front",
+         "Hardpoints" : [
+            {
+               "WeaponMount" : "NotSet",
+               "Omni" : false
+            }
+         ],
+         "Tonnage" : 0,
+         "InventorySlots" : 0,
+         "MaxArmor" : 0,
+         "InternalStructure" : 0
+      },
+      {
+         "Location" : "Left",
+         "Hardpoints" : [
+            {
+               "WeaponMount" : "NotSet",
+               "Omni" : false
+            }
+         ],
+         "Tonnage" : 0,
+         "InventorySlots" : 0,
+         "MaxArmor" : 0,
+         "InternalStructure" : 0
+      },
+      {
+         "Location" : "Right",
+         "Hardpoints" : [
+            {
+               "WeaponMount" : "NotSet",
+               "Omni" : false
+            }
+         ],
+         "Tonnage" : 0,
+         "InventorySlots" : 0,
+         "MaxArmor" : 0,
+         "InternalStructure" : 0
+      },
+      {
+         "Location" : "Rear",
+         "Hardpoints" : [
+            {
+               "WeaponMount" : "NotSet",
+               "Omni" : false
+            }
+         ],
+         "Tonnage" : 0,
+         "InventorySlots" : 0,
+         "MaxArmor" : 0,
+         "InternalStructure" : 0
+      },
+      {
+         "Location" : "Turret",
+         "Hardpoints" : [
+            {
+               "WeaponMount" : "NotSet",
+               "Omni" : false
+            }
+         ],
+         "Tonnage" : 0,
+         "InventorySlots" : 0,
+         "MaxArmor" : 0,
+         "InternalStructure" : 0
+      }
+   ]
+}
