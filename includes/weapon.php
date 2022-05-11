@@ -2,146 +2,91 @@
 
 class Weapon {
 
-    // how to handle this better???
-    // const TABLE_PREFIX = 'btjg_';
-    public static $variation_table_name;
-    public static $sub_type_table_name;
+    public static $json_path;
 
-    public function __construct() {
+    public $HeatGenerated int;
+    public $Damage int;
+    public $HeatDamage int;
+    public $AccuracyModifier int;
+    public $CriticalChanceMultiplier int;
+    public $RefireModifier int;
+    public $ShotsWhenFired int;
+    public $ProjectilesPerShot int;
+    public $AttackRecoil int;
+    public $Instability int;
+    public $Cost int;
+    public $Rarity int;
+    public $BattleValue int;
+    public $InventorySize int;
+    public $Tonnage float;
+    
 
+    public function __construct(
+        ?int $HeatGenerated = 0,
+        ?int $Damage = 0,
+        ?int $HeatDamage = 0,
+        ?int $AccuracyModifier = 0,
+        ?int $CriticalChanceMultiplier = 0,
+        ?int $RefireModifier = 0,
+        ?int $ShotsWhenFired = 0,
+        ?int $ProjectilesPerShot = 0,
+        ?int $AttackRecoil = 0,
+        ?int $Instability = 0,
+        ?int $Cost = 0,
+        ?int $Rarity = 0,
+        ?int $BattleValue = 0,
+        ?int $InventorySize = 0,
+        ?float $Tonnage = 0
+    ) {
+        $this->HeatGenerated = $HeatGenerated;
+        $this->Damage = $Damage;
+        $this->HeatDamage = $HeatDamage;
+        $this->AccuracyModifier = $AccuracyModifier;
+        $this->CriticalChanceMultiplier = $CriticalChanceMultiplier;
+        $this->RefireModifier = $RefireModifier;
+        $this->ShotsWhenFired = $ShotsWhenFired;
+        $this->ProjectilesPerShot = $ProjectilesPerShot;
+        $this->AttackRecoil = $AttackRecoil;
+        $this->Instability = $Instability;
+        $this->Cost = $Cost;
+        $this->Rarity = $Rarity;
+        $this->BattleValue = $BattleValue;
+        $this->InventorySize = $InventorySize;
+        $this->Tonnage = $Tonnage;
     }
 
-    public static function init( $table_prefix ) {
-        global $wpdb;
-
-        //set table_prefix;
-        // $weapon = new Weapon();
-        $this->variation_table_name = $wpdb->prefix . $table_prefix . 'weapon_variations';
-        $this->sub_type_table_name = $wpdb->prefix . $table_prefix . 'weapon_sub_types';
-
-        // create sub_type table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {$this->sub_type_table_name} (
-            Category VARCHAR(255),
-            Type VARCHAR(255),
-            Name VARCHAR(255), /*WeaponSubType VARCHAR(255),*/
-            MinRange INT,
-            MaxRange INT,
-            RangeSplit1 INT,
-            RangeSplit2 INT,
-            RangeSplit3 INT,
-            ammoCategoryID VARCHAR(255),
-            StartingAmmoCapacity INT,
-            HeatGenerated INT,
-            Damage INT,
-            OverheatedDamageMultiplier INT,
-            EvasiveDamageMultiplier INT,
-            EvasivePipsIgnored INT,
-            DamageVariance INT,
-            HeatDamage INT,
-            AccuracyModifier INT,
-            CriticalChanceMultiplier INT,
-            AOECapable BOOLEAN,
-            IndirectFireCapable BOOLEAN,
-            RefireModifier INT,
-            ShotsWhenFired INT,
-            ProjectilesPerShot INT,
-            AttackRecoil INT,
-            Instability INT,
-            WeaponEffectID VARCHAR(255),
-            Cost INT,
-            Rarity INT,
-            Purchasable BOOLEAN,
-            Model VARCHAR(255),
-            Details LONGTEXT,
-            Icon VARCHAR(255),
-            ComponentType VARCHAR(255),
-            ComponentSubType VARCHAR(255),
-            PrefabIdentifier VARCHAR(255),
-            BattleValue INT,
-            InventorySize INT,
-            Tonnage DECIMAL(10, 2),
-            AllowedLocations VARCHAR(255),
-            DisallowedLocations VARCHAR(255),
-            CriticalComponent BOOLEAN,
-            -- statusEffects1 VARCHAR(255), not gonna bother with status effects for now
-            tagSetSourceFile VARCHAR(255),
-            PRIMARY KEY(Name)
-        );");
-
-        // create variation table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {$this->variation_table_name} (
-            WeaponSubType VARCHAR(255),
-            HeatGenerated INT,
-            Damage INT,
-            HeatDamage INT,
-            AccuracyModifier INT,
-            CriticalChanceMultiplier INT,RefireModifier INT,
-            ShotsWhenFired INT,
-            ProjectilesPerShot INT,
-            AttackRecoil INT,
-            Instability INT,
-            Cost INT,
-            Rarity INT,
-            Manufacturer VARCHAR(255),
-            UIName VARCHAR(255),
-            Id VARCHAR(255),
-            Name VARCHAR(255),
-            BonusValueA VARCHAR(255),
-            BonusValueB VARCHAR(255),
-            BattleValue INT,
-            InventorySize INT,
-            Tonnage DECIMAL(10, 2),
-            ComponentTags1 VARCHAR(255),
-            ComponentTags2 VARCHAR(255),
-            ComponentTags3 VARCHAR(255),
-            PRIMARY KEY(Id)
-        );");
+    public static function init( $plugin_path, $table_prefix ) {
+        WeaponSubType::init($table_prefix);
+        WeaponVariation::init($table_prefix);
+        $this->json_path = `{plugin_path}/original-json/weapon`;
     }
 
-    public static function sub_type_from_json( string $json ): Weapon {
-        $sub_type = json_decode($json);
-        return new Weapon(
-            $mech->Description->Id,
-            $mech->ChassisID,
-            $mech->Locations,
-            $mech->inventory
-        );
-    }
+    public static function import() {
 
-    public static function variation_from_json( string $json ): Weapon {
-        $variation = json_decode($json);
-        return new Weapon(
-            $mech->Description->Id,
-            $mech->ChassisID,
-            $mech->Locations,
-            $mech->inventory
-        );
-    }
+        $json_files = new DirectoryIterator($this->json_path);
+        
+        foreach( $json_files as $json_file ) {
+            if($json_file->isDot()) {
+                continue;
+            }
+            $file_path = `{$this->json_path}/{$json_file->getFilename()}`;
+            $file_contents = file_get_contents($file_path);
 
-    public static function save_from_json( string $json ) {
-        $sub_type = Weapon::sub_type_from_json($json);
-        $variation = Weapon::variation_from_json($json);
-        $sub_type->save_sub_type();
-        $variation->save_variation();
-    }
+            $sub_type = WeaponSubType::from_json( $file_contents );
+            $sub_type->save();
 
+            $variation = Weapon::from_json( $file_contents );
+            $variation->save();
+    
+        }
+    
+    }
 
 }
 
 
     
     
-
-    function save_weapon_json( $variation ) {
-    global $wpdb;
-
-    $dbVariation = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}btjg_weapon_variations WHERE Id = '{$variation->Description->Id}';");
-    if( !empty($dbVariation) ) {
-        print("variation exists");
-        return;
-    }
-    insert_weapon_json($variation);
-}
 
 function insert_weapon_json( $variation ) {
     global $wpdb;
@@ -252,76 +197,9 @@ function insert_sub_type_with_variation( $variation ) {
 
 }
 
-function save_sub_type( $sub_type ) {
-    global $wpdb;
-    
-    $db_sub_type = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}btjg_weapon_sub_types WHERE Name = '{$sub_type->WeaponSubType}';");
-    if( !empty($db_sub_type) ) {
-        print("sub type exists");
-        return;
-    }
-    insert_sub_type($sub_type);
-}
 
-function insert_sub_type( $sub_type ) {
-    global $wpdb;
 
-    print_r($sub_type);
 
-    $description = $sub_type->Description;
-    $isAOECapable = $sub_type->AOECapable ?: 0;
-    $isIndirectFireCapable = $sub_type->IndirectFireCapable ?: 0;
-    $isPurchasable = $description->Purchasable ?: 0;
-    $isCriticalComponent = $sub_type->CriticalComponent ?: 0;
-    $battleValue = $sub_type->BattleValue ?: 0;
-    $details = str_replace("\"", "'", $sub_type->Description->Details);
-
-    $wpdb->query("INSERT INTO {$wpdb->prefix}btjg_weapon_sub_types VALUES (" .
-    "'{$sub_type->Category}'," .
-    "'{$sub_type->Type}'," .
-    "'{$sub_type->WeaponSubType}'," .
-    "{$sub_type->MinRange}," . 
-    "{$sub_type->MaxRange}," . 
-    "{$sub_type->RangeSplit[0]}," . 
-    "{$sub_type->RangeSplit[1]}," . 
-    "{$sub_type->RangeSplit[2]}," . 
-    "'{$sub_type->ammoCategoryID}'," . 
-    "{$sub_type->StartingAmmoCapacity}," . 
-    "{$sub_type->HeatGenerated}," . 
-    "{$sub_type->Damage}," . 
-    "{$sub_type->OverheatedDamageMultiplier}," . 
-    "{$sub_type->EvasiveDamageMultiplier}," . 
-    "{$sub_type->EvasivePipsIgnored}," . 
-    "{$sub_type->DamageVariance}," . 
-    "{$sub_type->HeatDamage}," . 
-    "{$sub_type->AccuracyModifier}," . 
-    "{$sub_type->CriticalChanceMultiplier}," . 
-    "{$isAOECapable}," . 
-    "{$isIndirectFireCapable}," . 
-    "{$sub_type->RefireModifier}," . 
-    "{$sub_type->ShotsWhenFired}," .
-    "{$sub_type->ProjectilesPerShot}," . 
-    "{$sub_type->AttackRecoil}," . 
-    "{$sub_type->Instability}," . 
-    "'{$sub_type->WeaponEffectID}'," . 
-    "{$sub_type->Description->Cost}," . 
-    "{$sub_type->Description->Rarity}," . 
-    "{$isPurchasable}," . 
-    "'{$sub_type->Description->Model}'," . 
-    "\"{$details}\"," . 
-    "'{$sub_type->Description->Icon}',"  . 
-    "'{$sub_type->ComponentType}'," . 
-    "'{$sub_type->ComponentSubType}'," . 
-    "'{$sub_type->PrefabIdentifier}'," . 
-    "{$battleValue}," . 
-    "{$sub_type->InventorySize}," . 
-    "{$sub_type->Tonnage}," . 
-    "'{$sub_type->AllowedLocations}'," . 
-    "'{$sub_type->DisallowedLocations}'," . 
-    "{$isCriticalComponent}," . 
-    // "'{$sub_type->statusEffects[0]}'," . not gonna bother with status effects for now
-    "'{$sub_type->ComponentTags->tagSetSourceFile}')");
-}
 
 function read_json_shortcode() {
 
