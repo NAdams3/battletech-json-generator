@@ -7,6 +7,7 @@ class WeaponVariation {
     // how to handle this better???
     // const TABLE_PREFIX = 'btjg_';
     public static $table_name;
+    public static $plugin_path;
 
     public $Id;
     public $WeaponSubType;
@@ -91,15 +92,15 @@ class WeaponVariation {
         // );
     }
 
-    public static function init( $table_prefix ) {
+    public static function init( $plugin_path, $table_prefix ) {
         global $wpdb;
 
         //set table_prefix;
-        $variation = new WeaponVariation("", "");
-        $variation->table_name = `{$wpdb->prefix}{$table_prefix}weapon_variations`;
+        WeaponVariation::$table_name = `{$wpdb->prefix}{$table_prefix}weapon_variations`;
+        WeaponVariation::$plugin_path = $plugin_path;
 
         // create variation table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {$variation->table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {WeaponVariation::$table_name} (
             Id VARCHAR(255),
             WeaponSubType VARCHAR(255),
             HeatGenerated INT,
@@ -127,6 +128,12 @@ class WeaponVariation {
             ComponentTags3 VARCHAR(255),
             PRIMARY KEY(Id)
         );");
+    }
+
+    public static function deactivate() {
+        global $wpdb;
+
+        $wpdb->query(`DROP TABLE IF EXISTS {WeaponVariation::$table_name};`);
     }
 
     public static function from_json( string $json, $sub_type ): WeaponVariation {

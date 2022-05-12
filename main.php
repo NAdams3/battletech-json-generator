@@ -16,14 +16,18 @@ Plugin::init();
 
 class Plugin {
 
-    const PLUGIN_PREFIX = 'btjg_';
+    // const PLUGIN_PREFIX = 'btjg_';
 
     public $plugin_path;
+    public $plugin_prefix;
 
     public function __construct() {
 
         // set plugin path
         $this->plugin_path = plugin_dir_path( __FILE__ );
+
+        //set plugin_prefix
+        $this->plugin_prefix = strtolower(__NAMESPACE__) . '_';
 
         // register autoloader
         spl_autoload_register(array($this, 'autoloader'));
@@ -42,12 +46,12 @@ class Plugin {
 
     public function activate() {
         //init classes
-        Weapon::init( $this->plugin_path, strtolower(__NAMESPACE__) . '_' );
-        Mech::init();
-        Location::init();
-        Hardpoint::init();
-        LocationItem::init();
-        Equipment::init();
+        Weapon::init( $this->plugin_path, $this->plugin_prefix );
+        Mech::init( $this->plugin_path, $this->plugin_prefix );
+        Location::init( $this->plugin_path, $this->plugin_prefix );
+        Hardpoint::init( $this->plugin_path, $this->plugin_prefix );
+        LocationItem::init( $this->plugin_path, $this->plugin_prefix );
+        Equipment::init( $this->plugin_path, $this->plugin_prefix );
     }
 
     public function deactivate() {

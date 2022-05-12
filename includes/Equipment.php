@@ -16,17 +16,25 @@ class Equipment {
         $this->slots = $slots;
     }
 
-    public static function mold(): Equipment {
-        return new Equipment(0.0, 0);
-    }
-
-    public function get_table_create_string() {
+    public static function init( $plugin_path, $table_prefix ) {
         global $wpdb;
-        return "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}btjg_equipment (
+
+        //set table_prefix;
+        Equipment::$table_name = `{$wpdb->prefix}{$table_prefix}equipment`;
+        Equipment::$plugin_path = $plugin_path;
+
+        // create table
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {Equipment::$table_name} (
             id VARCHAR(255) NOT NULL,
             tonnage DECIMAL(10,2),
             slots INT,
-            PRIMARY KEY(id))";
+            PRIMARY KEY(id))");
+    }
+
+    public static function deactivate() {
+        global $wpdb;
+
+        $wpdb->query(`DROP TABLE IF EXISTS {Equipment::$table_name};`);
     }
 
     public function get_table_drop_string() {

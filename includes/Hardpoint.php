@@ -19,8 +19,26 @@ class Hardpoint {
         $this->Omni = $Omni;
     }
 
-    public static function mold(): Hardpoint {
-        return new Hardpoint(0, "");
+    public static function init( $plugin_path, $table_prefix ) {
+        global $wpdb;
+
+        //set table_prefix;
+        Hardpoint::$table_name = `{$wpdb->prefix}{$table_prefix}hardpoints`;
+        Hardpoint::$plugin_path = $plugin_path;
+
+        // create table
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {Hardpoint::$table_name} (
+            id INT AUTO_INCREMENT NOT NULL,
+            location_id INT,
+            WeaponMount VARCHAR(255),
+            Omni BOOLEAN,
+            PRIMARY KEY(id))");
+    }
+
+    public static function deactivate() {
+        global $wpdb;
+
+        $wpdb->query(`DROP TABLE IF EXISTS {Hardpoint::$table_name};`);
     }
 
     public function get_table_create_string() {

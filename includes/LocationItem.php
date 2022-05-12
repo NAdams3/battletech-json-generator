@@ -40,8 +40,33 @@ class LocationItem {
         $this->IsFixed = $IsFixed;
     }
 
-    public static function mold(): LocationItem {
-        return new LocationItem(0, "");
+    public static function init( $plugin_path, $table_prefix ) {
+        global $wpdb;
+
+        //set table_prefix;
+        LocationItem::$table_name = `{$wpdb->prefix}{$table_prefix}location_items`;
+        LocationItem::$plugin_path = $plugin_path;
+
+        // create table
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {LocationItem::$table_name} (
+            id INT AUTO_INCREMENT NOT NULL,
+            location_id INT,
+            ComponentDefID VARCHAR(255),
+            SimGameUID VARCHAR(255),
+            ComponentDefType VARCHAR(255),
+            HardpointSlot INT,
+            GUID VARCHAR(255),
+            DamageLevel VARCHAR(255),
+            prefabName VARCHAR(255),
+            hasPrefabName BOOLEAN,
+            IsFixed BOOLEAN,
+            PRIMARY KEY(id))");
+    }
+
+    public static function deactivate() {
+        global $wpdb;
+
+        $wpdb->query(`DROP TABLE IF EXISTS {LocationItem::$table_name};`);
     }
 
     public static function from_object( $obj ): LocationItem {

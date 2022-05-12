@@ -4,6 +4,9 @@ namespace BTJG;
 
 class Mech {
 
+    public static $table_name;
+    public static $plugin_path;
+
     //mech properties
     public $Id; //Description->Id
     public $ChassisID; //ChassisID
@@ -29,8 +32,26 @@ class Mech {
         $this->InitialTonnage = $InitialTonnage;
     }
 
-    public static function init(): Mech {
-        return new Mech("");
+    public static function init( $plugin_path, $table_prefix ) {
+        global $wpdb;
+
+        //set table_prefix;
+        Mech::$table_name = `{$wpdb->prefix}{$table_prefix}mechs`;
+        Mech::$plugin_path = $plugin_path;
+
+        // create table
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {Mech::$table_name} (
+            Id VARCHAR(255),
+            ChassisID VARCHAR(255),
+            Tonnage INT,
+            InitialTonnage DECIMAL(10,2),
+            PRIMARY KEY(Id))");
+    }
+
+    public static function deactivate() {
+        global $wpdb;
+
+        $wpdb->query(`DROP TABLE IF EXISTS {Mech::$table_name};`);
     }
 
     public static function from_json( string $json ): Mech {

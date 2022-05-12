@@ -2,6 +2,9 @@
 
 class Location {
 
+    public static $plugin_path;
+    public static $table_name;
+
     //location properties
     public $id = 0; //id
     public $mech_id = ""; //$mech->Id
@@ -49,8 +52,34 @@ class Location {
         $this->Inventory = $Inventory;  
     }
 
-    public static function mold(): Location {
-        return new Location("", "");
+    public static function init( $plugin_path, $table_prefix ) {
+        global $wpdb;
+
+        //set table_prefix;
+        Location::$table_name = `{$wpdb->prefix}{$table_prefix}locations`;
+        Location::$plugin_path = $plugin_path;
+
+        // create table
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {Location::$table_name} (
+            id INT AUTO_INCREMENT NOT NULL,
+            mech_id VARCHAR(255),
+            Location VARCHAR(255),
+            DamageLevel VARCHAR(255),
+            CurrentArmor INT,
+            CurrentRearArmor INT,
+            CurrentInternalStructure INT,
+            AssignedArmor INT,
+            AssignedRearArmor INT,
+            InventorySlots INT,
+            MaxArmor INT,
+            MaxRearArmor INT,
+            PRIMARY KEY(id))");
+    }
+
+    public static function deactivate() {
+        global $wpdb;
+
+        $wpdb->query(`DROP TABLE IF EXISTS {Location::$table_name};`);
     }
 
     public static function from_db( $db_object ): Location {

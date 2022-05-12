@@ -1,9 +1,9 @@
 <?php
 
 class Chassis {
-    // property called $chassis->var_name;
-    public $var_name = "";
-    public $create_table_string = "";
+    
+    public static $table_name;
+    public static $plugin_path;
 
     //chassis properties
     public $Cost = 0; //Description->Cost 
@@ -40,6 +40,13 @@ class Chassis {
         $this->InitialTonnage = $InitialTonnage;
         $this->Locations = $Locations;
         $this->FixedEquipment = $FixedEquipment;
+    }
+
+    public static function init( $plugin_path, $table_prefix ) {
+
+        //set table_prefix;
+        Chassis::$table_name = `{$wpdb->prefix}{$table_prefix}chassis`;
+        Chassis::$plugin_path = $plugin_path;
     }
 
     public static function from_json_by_id( string $id ): Chassis {

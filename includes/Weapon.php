@@ -60,13 +60,16 @@ class Weapon {
     }
 
     public static function init( $plugin_path, $table_prefix ) {
-        WeaponSubType::init($table_prefix);
-        WeaponVariation::init($table_prefix);
+        WeaponSubType::init($plugin_path, $table_prefix);
+        WeaponVariation::init($plugin_path, $table_prefix);
 
-        $weapon = new Weapon();
+        Weapon::$import_path = `{$plugin_path}/original-json/weapon`;
+        Weapon::$export_path = `{$plugin_path}/json-output/weapon`;
+    }
 
-        $weapon->import_path = `{$plugin_path}/original-json/weapon`;
-        $weapon->export_path = `{$plugin_path}/json-output/weapon`;
+    public static function deactivate() {
+        WeaponSubType::deactivate();
+        WeaponVariation::deactivate();
     }
 
     public static function from_json( $json ) {
@@ -79,13 +82,13 @@ class Weapon {
 
     public static function import() {
 
-        $json_files = new DirectoryIterator($this->import_path);
+        $json_files = new DirectoryIterator(Weapon::$import_path);
         
         foreach( $json_files as $json_file ) {
             if($json_file->isDot()) {
                 continue;
             }
-            $file_path = `{$this->import_path}/{$json_file->getFilename()}`;
+            $file_path = `{Weapon::$import_path}/{$json_file->getFilename()}`;
             $file_contents = file_get_contents($file_path);
 
             $weapon = Weapon::from_json( $file_contents );
@@ -120,7 +123,7 @@ class Weapon {
             $weapon = Weapon::make( $variation, $sub_types[$sub_type_index] );
 
             //make file and push contents
-            file_put_contents(`{$this->export_path}/{$weapon->Id}.json`, json_encode($weapon));
+            file_put_contents(`{Weapon::$export_path}/{$weapon->Id}.json`, json_encode($weapon));
         }
     }
 

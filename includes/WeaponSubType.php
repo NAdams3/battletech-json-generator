@@ -4,9 +4,8 @@ namespace BTJG;
 
 class WeaponSubType {
 
-    // how to handle this better???
-    // const TABLE_PREFIX = 'btjg_';
     public static $table_name;
+    public static $plugin_path;
 
     public $Category;
     public $Type;
@@ -146,15 +145,16 @@ class WeaponSubType {
 
     }
 
-    public static function init( $table_prefix ) {
+    public static function init( $plugin_path, $table_prefix ) {
         global $wpdb;
 
         //set table_prefix;
-        $sub_type = new WeaponSubType("");
-        $sub_type->table_name = `{$wpdb->prefix}{$table_prefix}weapon_sub_types`;
+        WeaponSubType::$table_name = `{$wpdb->prefix}{$table_prefix}weapon_sub_types`;
+
+        WeaponSubType::$plugin_path = $plugin_path;
 
         // create sub_type table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {$sub_type->table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {WeaponSubType::$table_name} (
             Name VARCHAR(255), /*WeaponSubType VARCHAR(255),*/
             Category VARCHAR(255),
             Type VARCHAR(255),
@@ -201,6 +201,12 @@ class WeaponSubType {
             tagSetSourceFile VARCHAR(255),
             PRIMARY KEY(Name)
         );");
+    }
+
+    public static function deactivate() {
+        global $wpdb;
+
+        $wpdb->query(`DROP TABLE IF EXISTS {WeaponSubType::$table_name};`);
     }
 
     public static function from_json( string $json ): WeaponSubType {
