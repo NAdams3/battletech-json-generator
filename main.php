@@ -10,9 +10,11 @@ License: GPLv2 or later
 Text Domain: battletech-json-generator
 */
 
-BTJG_Plugin::init();
+namespace BTJG;
 
-class BTJG_Plugin {
+Plugin::init();
+
+class Plugin {
 
     const PLUGIN_PREFIX = 'btjg_';
 
@@ -23,21 +25,24 @@ class BTJG_Plugin {
         // set plugin path
         $this->plugin_path = plugin_dir_path( __FILE__ );
 
+        // register autoloader
+        spl_autoload_register(array($this, 'autoloader'));
+
         // register activate
         register_activation_hook(__FILE__, array($this, 'activate'));
 
         // register deactivate
-        register_deactivation_hook(__FILE__, array($this, 'deactivate'));
-        
+        register_deactivation_hook(__FILE__, array($this, 'deactivate'));        
 
-        // register autoloader
-        spl_autoload_register(array($this, 'autoloader'));
+    }
 
+    public static function init() {
+        return new Plugin();
     }
 
     public function activate() {
         //init classes
-        Weapon::init();
+        Weapon::init( $this->plugin_path, strtolower(__NAMESPACE__) . '_' );
         Mech::init();
         Location::init();
         Hardpoint::init();
@@ -60,20 +65,19 @@ class BTJG_Plugin {
     }
 
     public function autoloader( $class ) {
-        print_r($class);
 
         // check if class is part of our plugin
-        if( !str_contains( strtolower($class), self::PLUGIN_PREFIX ) ) {
+        if( !str_contains( strtolower($class), strtolower(__NAMESPACE__) ) ) {
             return;
         }
 
         // format path to class
-        $class_path = $this->plugin_path . 'includes/' . strtolower(str_replace( strtoupper(self::PLUGIN_PREFIX), '', $class )) . '.php';
+        $class_path = $this->plugin_path . 'includes/' . str_replace( __NAMESPACE__ . '\\', '', $class ) . '.php';
 
         // if file exists
-        if( file_exists($path) ) {
+        if( file_exists($class_path) ) {
             // require file
-            require_once( $path );
+            require_once( $class_path );
         }
 
     }

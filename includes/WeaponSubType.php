@@ -1,39 +1,41 @@
 <?php
 
-class WeaponSubType extends Weapon {
+namespace BTJG;
+
+class WeaponSubType {
 
     // how to handle this better???
     // const TABLE_PREFIX = 'btjg_';
     public static $table_name;
 
-    public $Category string;
-    public $Type string;
-    public $Name string;
-    public $MinRange int;
-    public $MaxRange int;
-    public $RangeSplit1 int;
-    public $RangeSplit2 int;
-    public $RangeSplit3 int;
-    public $ammoCategoryID string;
-    public $StartingAmmoCapacity int;
-    public $OverheatedDamageMultiplier int;
-    public $EvasiveDamageMultiplier int;
-    public $EvasivePipsIgnored int;
-    public $DamageVariance int;
-    public $AOECapable boolean;
-    public $IndirectFireCapable boolean;
-    public $WeaponEffectID string;
-    public $Purchasable boolean;
-    public $Model string;
-    public $Details string;
-    public $Icon string;
-    public $ComponentType string;
-    public $ComponentSubType string;
-    public $PrefabIdentifier string;
-    public $AllowedLocations string;
-    public $DisallowedLocations string;
-    public $CriticalComponent boolean;
-    public $tagSetSourceFile string;
+    public $Category;
+    public $Type;
+    public $Name;
+    public $MinRange;
+    public $MaxRange;
+    public $RangeSplit1;
+    public $RangeSplit2;
+    public $RangeSplit3;
+    public $ammoCategoryID;
+    public $StartingAmmoCapacity;
+    public $OverheatedDamageMultiplier;
+    public $EvasiveDamageMultiplier;
+    public $EvasivePipsIgnored;
+    public $DamageVariance;
+    public $AOECapable;
+    public $IndirectFireCapable;
+    public $WeaponEffectID;
+    public $Purchasable;
+    public $Model;
+    public $Details;
+    public $Icon;
+    public $ComponentType;
+    public $ComponentSubType;
+    public $PrefabIdentifier;
+    public $AllowedLocations;
+    public $DisallowedLocations;
+    public $CriticalComponent;
+    public $tagSetSourceFile;
 
     public function __construct(
         string $Name,
@@ -50,10 +52,10 @@ class WeaponSubType extends Weapon {
         ?int $EvasiveDamageMultiplier = 0,
         ?int $EvasivePipsIgnored = 0,
         ?int $DamageVariance = 0,
-        ?boolean $AOECapable = false,
-        ?boolean $IndirectFireCapable = false,
+        ?bool $AOECapable = false,
+        ?bool $IndirectFireCapable = false,
         ?string $WeaponEffectID = "",
-        ?boolean $Purchasable = false,
+        ?bool $Purchasable = false,
         ?string $Model = "",
         ?string $Details = "",
         ?string $Icon = "",
@@ -62,7 +64,7 @@ class WeaponSubType extends Weapon {
         ?string $PrefabIdentifier = "",
         ?string $AllowedLocations = "",
         ?string $DisallowedLocations = "",
-        ?boolean $CriticalComponent = false,
+        ?bool $CriticalComponent = false,
         ?string $tagSetSourceFile = "",
         ?int $HeatGenerated = 0,
         ?int $Damage = 0,
@@ -124,23 +126,23 @@ class WeaponSubType extends Weapon {
         // $this->InventorySize = $InventorySize;
         // $this->Tonnage = $Tonnage;
 
-        parent::__construct(
-            $HeatGenerated,
-            $Damage,
-            $HeatDamage,
-            $AccuracyModifier,
-            $CriticalChanceMultiplier,
-            $RefireModifier,
-            $ShotsWhenFired,
-            $ProjectilesPerShot,
-            $AttackRecoil,
-            $Instability,
-            $Cost,
-            $Rarity,
-            $BattleValue,
-            $InventorySize,
-            $Tonnage
-        );
+        // parent::__construct(
+        //     $HeatGenerated,
+        //     $Damage,
+        //     $HeatDamage,
+        //     $AccuracyModifier,
+        //     $CriticalChanceMultiplier,
+        //     $RefireModifier,
+        //     $ShotsWhenFired,
+        //     $ProjectilesPerShot,
+        //     $AttackRecoil,
+        //     $Instability,
+        //     $Cost,
+        //     $Rarity,
+        //     $BattleValue,
+        //     $InventorySize,
+        //     $Tonnage
+        // );
 
     }
 
@@ -148,11 +150,11 @@ class WeaponSubType extends Weapon {
         global $wpdb;
 
         //set table_prefix;
-        // $weapon = new Weapon();
-        $this->table_name = `{$wpdb->prefix}{$table_prefix}weapon_sub_types`;
+        $sub_type = new WeaponSubType("");
+        $sub_type->table_name = `{$wpdb->prefix}{$table_prefix}weapon_sub_types`;
 
         // create sub_type table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {$this->table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {$sub_type->table_name} (
             Name VARCHAR(255), /*WeaponSubType VARCHAR(255),*/
             Category VARCHAR(255),
             Type VARCHAR(255),
@@ -250,6 +252,67 @@ class WeaponSubType extends Weapon {
         );
     }
 
+    public static function get_by_name( $name ) {
+        global $wpdb;
+
+        $sub_type = $wpdb->get_row("SELECT * FROM {$this->table_name} WHERE Name = '{$name}';");
+        if( !empty($sub_type) ) {
+            return new WeaponSubType(
+                $sub_type->Name,
+                $sub_type->Category,
+                $sub_type->Type,
+                $sub_type->MinRange,
+                $sub_type->MaxRange,
+                $sub_type->RangeSplit1,
+                $sub_type->RangeSplit2,
+                $sub_type->RangeSplit3,
+                $sub_type->ammoCategoryID,
+                $sub_type->StartingAmmoCapacity,
+                $sub_type->OverheatedDamageMultiplier,
+                $sub_type->EvasiveDamageMultiplier,
+                $sub_type->EvasivePipsIgnored,
+                $sub_type->DamageVariance,
+                $sub_type->AOECapable,
+                $sub_type->IndirectFireCapable,
+                $sub_type->WeaponEffectID,
+                $sub_type->Purchasable,
+                $sub_type->Model,
+                $sub_type->Details,
+                $sub_type->Icon,
+                $sub_type->ComponentType,
+                $sub_type->ComponentSubType,
+                $sub_type->PrefabIdentifier,
+                $sub_type->AllowedLocations,
+                $sub_type->DisallowedLocations,
+                $sub_type->CriticalComponent,
+                $sub_type->tagSetSourceFile,
+                $sub_type->HeatGenerated,
+                $sub_type->Damage,
+                $sub_type->HeatDamage,
+                $sub_type->AccuracyModifier,
+                $sub_type->CriticalChanceMultiplier,
+                $sub_type->RefireModifier,
+                $sub_type->ShotsWhenFired,
+                $sub_type->ProjectilesPerShot,
+                $sub_type->AttackRecoil,
+                $sub_type->Instability,
+                $sub_type->Cost,
+                $sub_type->Rarity,
+                $sub_type->BattleValue,
+                $sub_type->InventorySize,
+                $sub_type->Tonnage
+            );
+        }
+
+        return false;
+
+    }
+
+    public static function get_all() {
+        global $wpdb;
+
+        return $wpdb->get_results("SELECT * FROM {$this->table_name};");
+    }
 
     public function save() {
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace BTJG;
+
 class Mech {
 
     //mech properties
@@ -27,7 +29,7 @@ class Mech {
         $this->InitialTonnage = $InitialTonnage;
     }
 
-    public static function mold(): Mech {
+    public static function init(): Mech {
         return new Mech("");
     }
 

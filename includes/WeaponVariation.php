@@ -1,6 +1,8 @@
 <?php
 
-class WeaponVariation extends Weapon {
+namespace BTJG;
+
+class WeaponVariation {
 
     // how to handle this better???
     // const TABLE_PREFIX = 'btjg_';
@@ -70,34 +72,34 @@ class WeaponVariation extends Weapon {
         // $this->InventorySize = $InventorySize;
         // $this->Tonnage = $Tonnage;
 
-        parent::__construct(
-            $HeatGenerated,
-            $Damage,
-            $HeatDamage,
-            $AccuracyModifier,
-            $CriticalChanceMultiplier,
-            $RefireModifier,
-            $ShotsWhenFired,
-            $ProjectilesPerShot,
-            $AttackRecoil,
-            $Instability,
-            $Cost,
-            $Rarity,
-            $BattleValue,
-            $InventorySize,
-            $Tonnage
-        );
+        // parent::__construct(
+        //     $HeatGenerated,
+        //     $Damage,
+        //     $HeatDamage,
+        //     $AccuracyModifier,
+        //     $CriticalChanceMultiplier,
+        //     $RefireModifier,
+        //     $ShotsWhenFired,
+        //     $ProjectilesPerShot,
+        //     $AttackRecoil,
+        //     $Instability,
+        //     $Cost,
+        //     $Rarity,
+        //     $BattleValue,
+        //     $InventorySize,
+        //     $Tonnage
+        // );
     }
 
     public static function init( $table_prefix ) {
         global $wpdb;
 
         //set table_prefix;
-        // $weapon = new Weapon();
-        $this->table_name = `{$wpdb->prefix}{$table_prefix}weapon_variations`;
+        $variation = new WeaponVariation("", "");
+        $variation->table_name = `{$wpdb->prefix}{$table_prefix}weapon_variations`;
 
         // create variation table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {$this->table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS {$variation->table_name} (
             Id VARCHAR(255),
             WeaponSubType VARCHAR(255),
             HeatGenerated INT,
@@ -127,7 +129,7 @@ class WeaponVariation extends Weapon {
         );");
     }
 
-    public static function from_json( string $json ): WeaponVariation {
+    public static function from_json( string $json, $sub_type ): WeaponVariation {
         $variation = json_decode($json);
         return new WeaponVariation(
             $variation->Description->Id,
@@ -140,25 +142,36 @@ class WeaponVariation extends Weapon {
             $variation->ComponentTags->items[0],
             $variation->ComponentTags->items[1],
             $variation->ComponentTags->items[2],
-            $variation->HeatGenerated,
-            $variation->Damage,
-            $variation->HeatDamage,
-            $variation->AccuracyModifier,
-            $variation->CriticalChanceMultiplier,
-            $variation->RefireModifier,
-            $variation->ShotsWhenFired,
-            $variation->ProjectilesPerShot,
-            $variation->AttackRecoil,
-            $variation->Instability,
-            $variation->Description->Cost,
-            $variation->Description->Rarity,
-            $variation->BattleValue,
-            $variation->InventorySize,
-            $variation->Tonnage
+            $variation->HeatGenerated - $sub_type->HeatGenerated,
+            $variation->Damage - $sub_type->Damage,
+            $variation->HeatDamage - $sub_type->HeatDamage,
+            $variation->AccuracyModifier - $sub_type->AccuracyModifier,
+            $variation->CriticalChanceMultiplier - $sub_type->CriticalChanceMultiplier,
+            $variation->RefireModifier - $sub_type->RefireModifier,
+            $variation->ShotsWhenFired - $sub_type->ShotsWhenFired,
+            $variation->ProjectilesPerShot - $sub_type->ProjectilesPerShot,
+            $variation->AttackRecoil - $sub_type->AttackRecoil,
+            $variation->Instability - $sub_type->Instability,
+            $variation->Description->Cost - $sub_type->Cost,
+            $variation->Description->Rarity - $sub_type->Rarity,
+            $variation->BattleValue - $sub_Type->BattleValue,
+            $variation->InventorySize - $sub_type->InventorySize,
+            $variation->Tonnage - $sub_type->Tonnage
         );
     }
 
+    public static function get_all() {
+        global $wpdb;
+
+        return $wpdb->get_results("SELECT * FROM {$this->table_name};");
+    }
+
     public function save() {
+
+        $sub_type = new WeaponSubType($this->WeaponSubType);
+        if( !$sub_type->exists() ) {
+            return false;
+        }
 
         if( $this->exists() ) {
             return $this-update();
@@ -180,7 +193,34 @@ class WeaponVariation extends Weapon {
     }
 
     public function insert() {
+        global $wpdb;
 
+        $wpdb->query("INSERT INTO {$this->table_name} VALUES (
+            '{$this->Id}',
+            '{$this->WeaponSubType}',
+            {$this->HeatGenerated},
+            {$this->Damage},
+            {$this->HeatDamage},
+            {$this->AccuracyModifier},
+            {$this->CriticalChanceMultiplier},
+            {$this->RefireModifier},
+            {$this->ShotsWhenFired},
+            {$this->ProjectilesPerShot},
+            {$this->AttackRecoil},
+            {$this->Instability},
+            {$this->Cost},
+            {$this->Rarity},
+            '{$this->Manufacturer}',
+            '{$this->UIName}',
+            '{$this->Name}',
+            '{$this->BonusValueA}',
+            '{$this->BonusValueB}',
+            {$this->BattleValue},
+            {$this->InventorySize},
+            {$this->Tonnage},
+            '{$this->ComponentTag1}',
+            '{$this->ComponentTag2}',
+            '{$this->ComponentTag3}');");
     }
 
     public function update() {
