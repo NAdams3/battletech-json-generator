@@ -1,5 +1,7 @@
 <?php
 
+namespace BTJG;
+
 class Location {
 
     public static $plugin_path;
@@ -56,11 +58,11 @@ class Location {
         global $wpdb;
 
         //set table_prefix;
-        Location::$table_name = `{$wpdb->prefix}{$table_prefix}locations`;
+        Location::$table_name = "{$wpdb->prefix}{$table_prefix}locations";
         Location::$plugin_path = $plugin_path;
 
         // create table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {Location::$table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS " . Location::$table_name . " (
             id INT AUTO_INCREMENT NOT NULL,
             mech_id VARCHAR(255),
             Location VARCHAR(255),
@@ -79,7 +81,7 @@ class Location {
     public static function deactivate() {
         global $wpdb;
 
-        $wpdb->query(`DROP TABLE IF EXISTS {Location::$table_name};`);
+        $wpdb->query("DROP TABLE IF EXISTS " . Location::$table_name . ";");
     }
 
     public static function from_db( $db_object ): Location {

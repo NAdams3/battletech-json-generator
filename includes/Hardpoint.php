@@ -1,6 +1,11 @@
 <?php
 
+namespace BTJG;
+
 class Hardpoint {
+
+    public static $table_name;
+    public static $plugin_path;
 
     //location properties
     public $id;
@@ -23,11 +28,11 @@ class Hardpoint {
         global $wpdb;
 
         //set table_prefix;
-        Hardpoint::$table_name = `{$wpdb->prefix}{$table_prefix}hardpoints`;
+        Hardpoint::$table_name = "{$wpdb->prefix}{$table_prefix}hardpoints";
         Hardpoint::$plugin_path = $plugin_path;
 
         // create table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {Hardpoint::$table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS " . Hardpoint::$table_name . " (
             id INT AUTO_INCREMENT NOT NULL,
             location_id INT,
             WeaponMount VARCHAR(255),
@@ -38,7 +43,7 @@ class Hardpoint {
     public static function deactivate() {
         global $wpdb;
 
-        $wpdb->query(`DROP TABLE IF EXISTS {Hardpoint::$table_name};`);
+        $wpdb->query("DROP TABLE IF EXISTS " . Hardpoint::$table_name . ";");
     }
 
     public function get_table_create_string() {

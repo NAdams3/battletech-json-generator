@@ -96,11 +96,11 @@ class WeaponVariation {
         global $wpdb;
 
         //set table_prefix;
-        WeaponVariation::$table_name = `{$wpdb->prefix}{$table_prefix}weapon_variations`;
+        self::$table_name = "{$wpdb->prefix}{$table_prefix}weapon_variations";
         WeaponVariation::$plugin_path = $plugin_path;
 
         // create variation table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {WeaponVariation::$table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS " . WeaponVariation::$table_name . " (
             Id VARCHAR(255),
             WeaponSubType VARCHAR(255),
             HeatGenerated INT,
@@ -133,7 +133,7 @@ class WeaponVariation {
     public static function deactivate() {
         global $wpdb;
 
-        $wpdb->query(`DROP TABLE IF EXISTS {WeaponVariation::$table_name};`);
+        $wpdb->query("DROP TABLE IF EXISTS " . WeaponVariation::$table_name . ";");
     }
 
     public static function from_json( string $json, $sub_type ): WeaponVariation {

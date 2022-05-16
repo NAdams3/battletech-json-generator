@@ -87,6 +87,12 @@ class Plugin {
     }
 }
 
+//import shortcode
+function import_weapon_json_shortcode() {
+    return Weapon::import();
+}
+add_shortcode('import-weapons', 'import_weapon_json_shortcode');
+
 
 
 

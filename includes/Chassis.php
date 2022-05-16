@@ -45,7 +45,7 @@ class Chassis {
     public static function init( $plugin_path, $table_prefix ) {
 
         //set table_prefix;
-        Chassis::$table_name = `{$wpdb->prefix}{$table_prefix}chassis`;
+        Chassis::$table_name = "{$wpdb->prefix}{$table_prefix}chassis";
         Chassis::$plugin_path = $plugin_path;
     }
 

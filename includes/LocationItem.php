@@ -1,6 +1,11 @@
 <?php
 
+namespace BTJG;
+
 class LocationItem {
+
+    public static $table_name;
+    public static $plugin_path;
 
     //location properties
     public $id;
@@ -44,11 +49,11 @@ class LocationItem {
         global $wpdb;
 
         //set table_prefix;
-        LocationItem::$table_name = `{$wpdb->prefix}{$table_prefix}location_items`;
+        LocationItem::$table_name = "{$wpdb->prefix}{$table_prefix}location_items";
         LocationItem::$plugin_path = $plugin_path;
 
         // create table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {LocationItem::$table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS " . LocationItem::$table_name . " (
             id INT AUTO_INCREMENT NOT NULL,
             location_id INT,
             ComponentDefID VARCHAR(255),
@@ -66,7 +71,7 @@ class LocationItem {
     public static function deactivate() {
         global $wpdb;
 
-        $wpdb->query(`DROP TABLE IF EXISTS {LocationItem::$table_name};`);
+        $wpdb->query("DROP TABLE IF EXISTS " . LocationItem::$table_name . ";");
     }
 
     public static function from_object( $obj ): LocationItem {

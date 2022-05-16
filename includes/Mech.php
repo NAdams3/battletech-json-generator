@@ -36,11 +36,11 @@ class Mech {
         global $wpdb;
 
         //set table_prefix;
-        Mech::$table_name = `{$wpdb->prefix}{$table_prefix}mechs`;
+        Mech::$table_name = "{$wpdb->prefix}{$table_prefix}mechs";
         Mech::$plugin_path = $plugin_path;
 
         // create table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {Mech::$table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS " . Mech::$table_name . " (
             Id VARCHAR(255),
             ChassisID VARCHAR(255),
             Tonnage INT,
@@ -51,7 +51,7 @@ class Mech {
     public static function deactivate() {
         global $wpdb;
 
-        $wpdb->query(`DROP TABLE IF EXISTS {Mech::$table_name};`);
+        $wpdb->query("DROP TABLE IF EXISTS " . Mech::$table_name . ";");
     }
 
     public static function from_json( string $json ): Mech {

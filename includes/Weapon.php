@@ -63,8 +63,8 @@ class Weapon {
         WeaponSubType::init($plugin_path, $table_prefix);
         WeaponVariation::init($plugin_path, $table_prefix);
 
-        Weapon::$import_path = `{$plugin_path}/original-json/weapon`;
-        Weapon::$export_path = `{$plugin_path}/json-output/weapon`;
+        Weapon::$import_path = "{$plugin_path}/original-json/weapon";
+        Weapon::$export_path = "{$plugin_path}/json-output/weapon";
     }
 
     public static function deactivate() {
@@ -173,9 +173,6 @@ class Weapon {
     }
 
 }
-
-
-    
     
 
 

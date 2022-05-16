@@ -149,12 +149,12 @@ class WeaponSubType {
         global $wpdb;
 
         //set table_prefix;
-        WeaponSubType::$table_name = `{$wpdb->prefix}{$table_prefix}weapon_sub_types`;
+        WeaponSubType::$table_name = "{$wpdb->prefix}{$table_prefix}weapon_sub_types";
 
         WeaponSubType::$plugin_path = $plugin_path;
 
         // create sub_type table
-        $wpdb->query("CREATE TABLE IF NOT EXISTS {WeaponSubType::$table_name} (
+        $wpdb->query("CREATE TABLE IF NOT EXISTS " . WeaponSubType::$table_name . " (
             Name VARCHAR(255), /*WeaponSubType VARCHAR(255),*/
             Category VARCHAR(255),
             Type VARCHAR(255),
@@ -206,7 +206,7 @@ class WeaponSubType {
     public static function deactivate() {
         global $wpdb;
 
-        $wpdb->query(`DROP TABLE IF EXISTS {WeaponSubType::$table_name};`);
+        $wpdb->query("DROP TABLE IF EXISTS " . WeaponSubType::$table_name . ";");
     }
 
     public static function from_json( string $json ): WeaponSubType {
